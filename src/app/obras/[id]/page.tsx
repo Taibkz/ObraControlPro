@@ -93,7 +93,7 @@ export default function ObraDetailPage() {
   if (!project) {
     return (
       <div className="bg-white rounded-2xl p-10 border border-slate-200 text-center space-y-4">
-        <AlertTriangle className="w-12 h-12 text-amber-500 mx-auto" />
+        <AlertTriangle className="w-12 h-12 text-blue-600 mx-auto" />
         <h2 className="text-xl font-bold text-slate-900">Obra no encontrada</h2>
         <p className="text-sm text-slate-500">La obra solicitada no existe o ha sido eliminada.</p>
         <Link
@@ -298,7 +298,7 @@ export default function ObraDetailPage() {
             </span>
             <button
               onClick={() => setIsAddPaymentOpen(true)}
-              className="text-[10px] font-bold text-amber-600 hover:underline flex items-center gap-0.5"
+              className="text-[10px] font-bold text-blue-600 hover:underline flex items-center gap-0.5"
             >
               <Plus className="w-3 h-3" /> Pago
             </button>
@@ -308,7 +308,7 @@ export default function ObraDetailPage() {
               {project.totalCharged.toLocaleString('es-ES', { minimumFractionDigits: 2 })} €
             </div>
             <p className="text-[11px] text-slate-500 mt-0.5">
-              Pendiente: <strong className="text-amber-600">{Math.max(0, stats.budgetedGross - project.totalCharged).toLocaleString('es-ES')} €</strong>
+              Pendiente: <strong className="text-blue-600">{Math.max(0, stats.budgetedGross - project.totalCharged).toLocaleString('es-ES')} €</strong>
             </p>
           </div>
         </div>
@@ -357,7 +357,7 @@ export default function ObraDetailPage() {
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            <Package className="w-4 h-4 text-amber-500" />
+            <Package className="w-4 h-4 text-blue-600" />
             <span>Materiales & Merma (+5%)</span>
             <span className="text-xs px-1.5 py-0.5 rounded-full bg-slate-100 text-slate-700 font-bold">
               {obraMaterials.length}
@@ -407,7 +407,7 @@ export default function ObraDetailPage() {
         {/* Tab 1: Materiales con Merma y Redondeo */}
         {activeTab === 'materiales' && (
           <div className="p-4 sm:p-6 space-y-5">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-amber-50/60 p-4 rounded-xl border border-amber-200/70">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-blue-50/60 p-4 rounded-xl border border-amber-200/70">
               <div>
                 <h3 className="font-bold text-sm text-amber-950 flex items-center gap-2">
                   <span>Despiece de Materiales & Estimación con Merma</span>
@@ -425,7 +425,7 @@ export default function ObraDetailPage() {
 
               <button
                 onClick={() => setIsAddMatOpen(true)}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs sm:text-sm rounded-xl shadow-md transition-all active:scale-95"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs sm:text-sm rounded-xl shadow-md transition-all active:scale-95"
               >
                 <Plus className="w-4 h-4 stroke-[2.5]" />
                 <span>Calcular & Añadir Material</span>
@@ -441,7 +441,7 @@ export default function ObraDetailPage() {
                 </p>
                 <button
                   onClick={() => setIsAddMatOpen(true)}
-                  className="text-xs text-amber-600 font-bold hover:underline"
+                  className="text-xs text-blue-600 font-bold hover:underline"
                 >
                   Pulsar aquí para calcular y añadir placas, perfiles o pasta
                 </button>
@@ -488,7 +488,7 @@ export default function ObraDetailPage() {
                         <td className="py-3 text-right font-medium">
                           {pm.requiredQuantity} {pm.unitType}
                         </td>
-                        <td className="py-3 text-right text-amber-700 font-semibold">
+                        <td className="py-3 text-right text-blue-700 font-semibold">
                           {pm.quantityWithWaste} {pm.unitType}
                         </td>
                         <td className="py-3 text-right">
@@ -704,7 +704,7 @@ export default function ObraDetailPage() {
           <div className="bg-white rounded-2xl w-full max-w-lg shadow-2xl border border-slate-100 overflow-hidden flex flex-col max-h-[92vh]">
             <div className="bg-slate-900 text-white px-5 py-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-amber-500 text-slate-950 flex items-center justify-center font-bold">
+                <div className="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center font-bold">
                   <Ruler className="w-4 h-4" />
                 </div>
                 <div>
@@ -726,7 +726,7 @@ export default function ObraDetailPage() {
                 <select
                   value={selectedCatalogMatId}
                   onChange={e => handleSelectCatalogMaterial(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 font-semibold focus:ring-2 focus:ring-amber-500 outline-none"
+                  className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 font-semibold focus:ring-2 focus:ring-blue-500 outline-none"
                 >
                   <option value="">-- Material Personalizado --</option>
                   {materials.map(m => (
@@ -747,7 +747,7 @@ export default function ObraDetailPage() {
                   onChange={e => setMatName(e.target.value)}
                   required
                   placeholder="Ej. Placas 13mm blanca, Montantes 48mm, Pasta rápida..."
-                  className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 focus:ring-2 focus:ring-amber-500 outline-none"
+                  className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 focus:ring-2 focus:ring-blue-500 outline-none"
                 />
               </div>
 
@@ -764,7 +764,7 @@ export default function ObraDetailPage() {
                     value={requiredQty}
                     onChange={e => setRequiredQty(parseFloat(e.target.value) || 0)}
                     required
-                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 font-bold focus:ring-2 focus:ring-amber-500 outline-none"
+                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-500 outline-none"
                   />
                 </div>
 
@@ -779,7 +779,7 @@ export default function ObraDetailPage() {
                     value={wastePct}
                     onChange={e => setWastePct(parseFloat(e.target.value) || 0)}
                     required
-                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 font-bold focus:ring-2 focus:ring-amber-500 outline-none"
+                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-500 outline-none"
                   />
                 </div>
 
@@ -794,7 +794,7 @@ export default function ObraDetailPage() {
                     value={coveragePerUnit}
                     onChange={e => setCoveragePerUnit(parseFloat(e.target.value) || 1)}
                     required
-                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 font-bold focus:ring-2 focus:ring-amber-500 outline-none"
+                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-500 outline-none"
                   />
                   <span className="text-[9px] text-slate-400">Ej: 3.0 m² por placa</span>
                 </div>
@@ -812,7 +812,7 @@ export default function ObraDetailPage() {
                     value={unitCost}
                     onChange={e => setUnitCost(parseFloat(e.target.value) || 0)}
                     required
-                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 font-bold focus:ring-2 focus:ring-amber-500 outline-none"
+                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-500 outline-none"
                   />
                 </div>
 
@@ -823,7 +823,7 @@ export default function ObraDetailPage() {
                   <select
                     value={unitType}
                     onChange={e => setUnitType(e.target.value as UnitType)}
-                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 focus:ring-2 focus:ring-amber-500 outline-none"
+                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 focus:ring-2 focus:ring-blue-500 outline-none"
                   >
                     <option value="m2">m² (Metros cuadrados)</option>
                     <option value="ml">ml (Metros lineales)</option>
@@ -836,7 +836,7 @@ export default function ObraDetailPage() {
               </div>
 
               {/* CARD DE CÁLCULO EN TIEMPO REAL */}
-              <div className="bg-amber-50 border border-amber-300/80 rounded-xl p-3.5 space-y-2">
+              <div className="bg-blue-50 border border-amber-300/80 rounded-xl p-3.5 space-y-2">
                 <span className="text-[10px] font-bold text-amber-900 uppercase tracking-wider block">
                   Resultado del Cálculo Automático:
                 </span>
@@ -846,7 +846,7 @@ export default function ObraDetailPage() {
                 </div>
                 <div className="flex justify-between items-center text-xs text-amber-950">
                   <span>Unidades necesarias (redondeo hacia arriba):</span>
-                  <span className="bg-amber-500 text-slate-950 px-2 py-0.5 rounded font-black text-sm">
+                  <span className="bg-blue-600 text-white px-2 py-0.5 rounded font-black text-sm">
                     {previewCalculatedUnits} piezas
                   </span>
                 </div>
@@ -866,7 +866,7 @@ export default function ObraDetailPage() {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shadow"
+                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs shadow"
                 >
                   Añadir a la Obra ({previewTotalCost.toFixed(2)} €)
                 </button>
@@ -981,7 +981,7 @@ export default function ObraDetailPage() {
               )}
 
               {workType === 'horas' ? (
-                <div className="grid grid-cols-2 gap-3 bg-amber-50 p-3 rounded-xl border border-amber-200">
+                <div className="grid grid-cols-2 gap-3 bg-blue-50 p-3 rounded-xl border border-amber-200">
                   <div>
                     <label className="block font-bold text-amber-900 uppercase mb-1">Horas</label>
                     <input

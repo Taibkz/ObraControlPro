@@ -1,4 +1,4 @@
-﻿import type { Config } from "tailwindcss";
+import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
@@ -10,17 +10,23 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          50: "#fff8eb",
-          100: "#feefc7",
-          200: "#fedf88",
-          300: "#fcc849",
-          400: "#f9ab13",
-          500: "#e58e06",
-          600: "#c76d03",
-          700: "#9e4c05",
-          800: "#803c0b",
-          900: "#6a320c",
+          50: "#eff6ff",
+          100: "#dbeafe",
+          200: "#bfdbfe",
+          300: "#93c5fd",
+          400: "#60a5fa",
+          500: "#3b82f6",
+          600: "#2563eb",
+          700: "#1d4ed8",
+          800: "#1e40af",
+          900: "#1e3a8a",
+          950: "#0f172a",
         },
+        navy: {
+          800: "#0f1f38",
+          900: "#0a1526",
+          950: "#050b14",
+        }
       },
     },
   },

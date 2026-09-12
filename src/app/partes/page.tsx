@@ -69,7 +69,7 @@ export default function PartesPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-2.5">
-            <Clock className="w-7 h-7 text-amber-500" />
+            <Clock className="w-7 h-7 text-blue-600" />
             <span>Partes de Trabajo & Salarios</span>
           </h1>
           <p className="text-sm text-slate-500 mt-1">
@@ -108,7 +108,7 @@ export default function PartesPage() {
         <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
           <div className="flex items-center justify-between text-slate-400">
             <span className="text-xs font-bold uppercase tracking-wider">Horas Trabajadas</span>
-            <Clock className="w-4 h-4 text-amber-500" />
+            <Clock className="w-4 h-4 text-blue-600" />
           </div>
           <div className="mt-2">
             <div className="text-2xl font-black text-slate-900">
@@ -266,7 +266,7 @@ export default function PartesPage() {
           <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl border border-slate-100 overflow-hidden text-slate-800">
             <div className="bg-slate-900 text-white px-5 py-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-amber-500 text-slate-950 flex items-center justify-center font-bold">
+                <div className="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center font-bold">
                   <UserPlus className="w-4 h-4" />
                 </div>
                 <h3 className="font-bold text-sm">Registrar Nuevo Trabajador</h3>
@@ -287,7 +287,7 @@ export default function PartesPage() {
                   onChange={e => setNewFullName(e.target.value)}
                   placeholder="Ej. Mohsin, Karim, Juan..."
                   required
-                  className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 font-semibold focus:ring-2 focus:ring-amber-500 outline-none"
+                  className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 font-semibold focus:ring-2 focus:ring-blue-500 outline-none"
                 />
               </div>
 
@@ -345,7 +345,7 @@ export default function PartesPage() {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold shadow"
+                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold shadow"
                 >
                   Guardar Trabajador
                 </button>

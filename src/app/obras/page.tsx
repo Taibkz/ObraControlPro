@@ -91,7 +91,7 @@ function ObrasContent() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-2.5">
-            <Building2 className="w-7 h-7 text-amber-500" />
+            <Building2 className="w-7 h-7 text-blue-600" />
             <span>Gestión de Obras</span>
           </h1>
           <p className="text-sm text-slate-500 mt-1">
@@ -101,7 +101,7 @@ function ObrasContent() {
 
         <button
           onClick={() => setIsNewModalOpen(true)}
-          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm shadow-md shadow-amber-500/10 active:scale-95 transition-all"
+          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-sm shadow-md shadow-amber-500/10 active:scale-95 transition-all"
         >
           <Plus className="w-4 h-4 stroke-[2.5]" />
           <span>Crear Nueva Obra</span>
@@ -176,7 +176,7 @@ function ObrasContent() {
             placeholder="Buscar por obra o cliente..."
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-8 pr-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 focus:ring-2 focus:ring-amber-500 outline-none"
+            className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-8 pr-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 focus:ring-2 focus:ring-blue-500 outline-none"
           />
           <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5 pointer-events-none" />
         </div>
@@ -191,7 +191,7 @@ function ObrasContent() {
           </p>
           <button
             onClick={() => setIsNewModalOpen(true)}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500 text-slate-950 font-bold text-xs rounded-xl shadow"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white font-bold text-xs rounded-xl shadow"
           >
             <Plus className="w-4 h-4" />
             <span>Dar de Alta una Obra</span>
@@ -214,7 +214,7 @@ function ObrasContent() {
                   <div className="flex items-start justify-between gap-3 mb-2">
                     <div>
                       <div className="flex items-center gap-2">
-                        <h3 className="font-bold text-base text-slate-900 group-hover:text-amber-600 transition-colors">
+                        <h3 className="font-bold text-base text-slate-900 group-hover:text-blue-600 transition-colors">
                           {proj.name}
                         </h3>
                       </div>
@@ -397,7 +397,7 @@ function ObrasContent() {
           <div className="bg-white rounded-2xl w-full max-w-lg shadow-2xl border border-slate-100 overflow-hidden max-h-[90vh] flex flex-col">
             <div className="bg-slate-900 text-white px-5 py-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-amber-500 text-slate-950 flex items-center justify-center font-bold">
+                <div className="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center font-bold">
                   <Building2 className="w-5 h-5" />
                 </div>
                 <h3 className="font-bold text-base">Crear Nueva Obra</h3>
@@ -421,7 +421,7 @@ function ObrasContent() {
                   onChange={e => setName(e.target.value)}
                   placeholder="Ej. Reforma Integral Calle Mayor, 14"
                   required
-                  className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 font-semibold focus:ring-2 focus:ring-amber-500 outline-none"
+                  className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 font-semibold focus:ring-2 focus:ring-blue-500 outline-none"
                 />
               </div>
 
@@ -436,7 +436,7 @@ function ObrasContent() {
                     onChange={e => setClientName(e.target.value)}
                     placeholder="Ej. Juan Pérez"
                     required
-                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 focus:ring-2 focus:ring-amber-500 outline-none"
+                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 focus:ring-2 focus:ring-blue-500 outline-none"
                   />
                 </div>
                 <div>
@@ -448,7 +448,7 @@ function ObrasContent() {
                     value={clientPhone}
                     onChange={e => setClientPhone(e.target.value)}
                     placeholder="600 000 000"
-                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 focus:ring-2 focus:ring-amber-500 outline-none"
+                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 focus:ring-2 focus:ring-blue-500 outline-none"
                   />
                 </div>
               </div>
@@ -462,7 +462,7 @@ function ObrasContent() {
                   value={address}
                   onChange={e => setAddress(e.target.value)}
                   placeholder="Calle, número, piso o localidad..."
-                  className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 focus:ring-2 focus:ring-amber-500 outline-none"
+                  className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 focus:ring-2 focus:ring-blue-500 outline-none"
                 />
               </div>
 
@@ -478,7 +478,7 @@ function ObrasContent() {
                     value={budgetedAmount}
                     onChange={e => setBudgetedAmount(parseFloat(e.target.value) || 0)}
                     required
-                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 font-bold focus:ring-2 focus:ring-amber-500 outline-none"
+                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-500 outline-none"
                   />
                 </div>
 
@@ -489,7 +489,7 @@ function ObrasContent() {
                   <select
                     value={vatRate}
                     onChange={e => setVatRate(Number(e.target.value))}
-                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 font-semibold focus:ring-2 focus:ring-amber-500 outline-none"
+                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 font-semibold focus:ring-2 focus:ring-blue-500 outline-none"
                   >
                     <option value={21}>21% (General)</option>
                     <option value={10}>10% (Reforma viv.)</option>
@@ -504,7 +504,7 @@ function ObrasContent() {
                   <select
                     value={status}
                     onChange={e => setStatus(e.target.value as ProjectStatus)}
-                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 font-semibold focus:ring-2 focus:ring-amber-500 outline-none"
+                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 font-semibold focus:ring-2 focus:ring-blue-500 outline-none"
                   >
                     <option value="activa">🟢 Activa (En curso)</option>
                     <option value="presupuesto">🟡 Presupuesto</option>
@@ -521,7 +521,7 @@ function ObrasContent() {
                   value={notes}
                   onChange={e => setNotes(e.target.value)}
                   placeholder="Detalles de la obra, requerimientos especiales..."
-                  className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 focus:ring-2 focus:ring-amber-500 outline-none"
+                  className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 focus:ring-2 focus:ring-blue-500 outline-none"
                 />
               </div>
 
@@ -535,7 +535,7 @@ function ObrasContent() {
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shadow-md"
+                  className="px-5 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs shadow-md"
                 >
                   Guardar y Abrir Obra
                 </button>

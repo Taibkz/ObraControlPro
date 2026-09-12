@@ -91,7 +91,7 @@ export default function FinanzasPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-2.5">
-            <Wallet className="w-7 h-7 text-amber-500" />
+            <Wallet className="w-7 h-7 text-blue-600" />
             <span>Finanzas, Facturación e Impuestos</span>
           </h1>
           <p className="text-sm text-slate-500 mt-1">
@@ -162,7 +162,7 @@ export default function FinanzasPage() {
         <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-sm">
           <div className="flex items-center justify-between text-slate-400">
             <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider">Beneficio Limpio</span>
-            <Wallet className="w-4 h-4 text-amber-500" />
+            <Wallet className="w-4 h-4 text-blue-600" />
           </div>
           <div className="mt-2">
             <div className={`text-xl sm:text-2xl font-black ${netProfit >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
@@ -310,7 +310,7 @@ export default function FinanzasPage() {
                   onChange={e => setConcept(e.target.value)}
                   placeholder="Ej. Factura Saltoki F-128, Gasoil furgoneta, Adelanto cliente..."
                   required
-                  className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 focus:ring-2 focus:ring-amber-500 outline-none"
+                  className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 focus:ring-2 focus:ring-blue-500 outline-none"
                 />
               </div>
 

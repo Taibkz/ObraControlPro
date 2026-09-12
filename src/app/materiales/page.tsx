@@ -149,7 +149,7 @@ export default function MaterialesPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-2.5">
-            <Package className="w-7 h-7 text-amber-500" />
+            <Package className="w-7 h-7 text-blue-600" />
             <span>Catalogo de Materiales & Suministros</span>
           </h1>
           <p className="text-sm text-slate-500 mt-1">
@@ -159,7 +159,7 @@ export default function MaterialesPage() {
 
         <button
           onClick={() => setIsAddModalOpen(true)}
-          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm shadow-md shadow-amber-500/10 active:scale-95 transition-all"
+          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-sm shadow-md shadow-amber-500/10 active:scale-95 transition-all"
         >
           <Plus className="w-4 h-4 stroke-[2.5]" />
           <span>Nuevo Material</span>
@@ -170,7 +170,7 @@ export default function MaterialesPage() {
       <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-2xl p-5 sm:p-6 shadow-xl border border-slate-700">
         <div className="flex items-center justify-between border-b border-slate-700/80 pb-3 mb-4">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-amber-500 text-slate-950 flex items-center justify-center font-bold">
+            <div className="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center font-bold">
               <Ruler className="w-4 h-4" />
             </div>
             <div>
@@ -180,7 +180,7 @@ export default function MaterialesPage() {
               <p className="text-xs text-slate-400">Aplica el +5% de merma y redondeo superior automatico</p>
             </div>
           </div>
-          <span className="text-[11px] font-extrabold bg-amber-500/20 text-amber-400 border border-amber-500/30 px-2.5 py-1 rounded-full">
+          <span className="text-[11px] font-extrabold bg-blue-500/20 text-blue-400 border border-blue-500/30 px-2.5 py-1 rounded-full">
             +5% Desperdicio Auto
           </span>
         </div>
@@ -192,7 +192,7 @@ export default function MaterialesPage() {
             </p>
             <button
               onClick={() => setIsAddModalOpen(true)}
-              className="inline-flex items-center gap-1.5 px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs shadow"
+              className="inline-flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold rounded-xl text-xs shadow"
             >
               <Plus className="w-4 h-4" />
               <span>Dar de Alta Primer Material</span>
@@ -209,7 +209,7 @@ export default function MaterialesPage() {
                 <select
                   value={calcMaterialId}
                   onChange={e => setCalcMaterialId(e.target.value)}
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white font-semibold focus:ring-2 focus:ring-amber-500 outline-none"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white font-semibold focus:ring-2 focus:ring-blue-500 outline-none"
                 >
                   {materials.map(m => (
                     <option key={m.id} value={m.id}>
@@ -231,7 +231,7 @@ export default function MaterialesPage() {
                     min="0.5"
                     value={calcMeters}
                     onChange={e => setCalcMeters(parseFloat(e.target.value) || 0)}
-                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white font-extrabold focus:ring-2 focus:ring-amber-500 outline-none"
+                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white font-extrabold focus:ring-2 focus:ring-blue-500 outline-none"
                   />
                   <span className="absolute right-3 top-2.5 text-xs text-slate-400 font-bold">
                     {activeCalcMat?.unitType || 'm2'}
@@ -250,7 +250,7 @@ export default function MaterialesPage() {
                   min="0"
                   value={calcWastePct}
                   onChange={e => setCalcWastePct(parseFloat(e.target.value) || 0)}
-                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white font-extrabold focus:ring-2 focus:ring-amber-500 outline-none"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white font-extrabold focus:ring-2 focus:ring-blue-500 outline-none"
                 />
               </div>
             </div>
@@ -259,12 +259,12 @@ export default function MaterialesPage() {
             <div className="mt-4 pt-4 border-t border-slate-700/80 grid grid-cols-1 sm:grid-cols-3 gap-3 items-center">
               <div className="bg-slate-800/80 p-3 rounded-xl border border-slate-700 flex justify-between items-center text-xs">
                 <span className="text-slate-400">Total con desperdicio (+{calcWastePct}%):</span>
-                <span className="font-extrabold text-amber-400 text-sm">{calcQtyWithWaste} {activeCalcMat?.unitType}</span>
+                <span className="font-extrabold text-blue-400 text-sm">{calcQtyWithWaste} {activeCalcMat?.unitType}</span>
               </div>
 
               <div className="bg-slate-800/80 p-3 rounded-xl border border-slate-700 flex justify-between items-center text-xs">
                 <span className="text-slate-400">Piezas a comprar (Redondeo Ceil):</span>
-                <span className="font-black text-white bg-amber-500 text-slate-950 px-2 py-0.5 rounded text-sm">
+                <span className="font-black text-white bg-blue-600 text-white px-2 py-0.5 rounded text-sm">
                   {calcCalculatedUnits} {activeCalcMat?.unitType === 'm2' ? 'placas' : 'unidades'}
                 </span>
               </div>
@@ -299,7 +299,7 @@ export default function MaterialesPage() {
                   className={`w-full sm:w-auto px-4 py-2 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow ${
                     addedToObraSuccess
                       ? 'bg-emerald-500 text-white'
-                      : 'bg-amber-500 hover:bg-amber-400 text-slate-950'
+                      : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white'
                   }`}
                 >
                   {addedToObraSuccess ? (
@@ -346,7 +346,7 @@ export default function MaterialesPage() {
               placeholder="Buscar material..."
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-8 pr-3 py-1.5 text-xs text-slate-800 outline-none focus:ring-2 focus:ring-amber-500"
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-8 pr-3 py-1.5 text-xs text-slate-800 outline-none focus:ring-2 focus:ring-blue-500"
             />
             <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" />
           </div>
@@ -393,7 +393,7 @@ export default function MaterialesPage() {
                     <td className="py-3.5 px-4 text-right font-semibold text-slate-800">
                       {mat.coveragePerUnit} {mat.unitType}
                     </td>
-                    <td className="py-3.5 px-4 text-right font-semibold text-amber-700">
+                    <td className="py-3.5 px-4 text-right font-semibold text-blue-700">
                       +{mat.defaultWastePercentage}%
                     </td>
                     <td className="py-3.5 px-4 text-right font-extrabold text-slate-900 text-sm">
@@ -422,7 +422,7 @@ export default function MaterialesPage() {
           <div className="bg-white rounded-2xl w-full max-w-lg shadow-2xl border border-slate-100 overflow-hidden flex flex-col max-h-[92vh]">
             <div className="bg-slate-900 text-white px-5 py-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-amber-500 text-slate-950 flex items-center justify-center font-bold">
+                <div className="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center font-bold">
                   <Package className="w-4 h-4" />
                 </div>
                 <h3 className="font-bold text-base">Registrar Material en Catalogo</h3>
@@ -441,7 +441,7 @@ export default function MaterialesPage() {
                   onChange={e => setName(e.target.value)}
                   placeholder="Ej. Montante 48mm galvanizado, Pasta de juntas..."
                   required
-                  className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 font-semibold focus:ring-2 focus:ring-amber-500 outline-none"
+                  className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 font-semibold focus:ring-2 focus:ring-blue-500 outline-none"
                 />
               </div>
 
@@ -475,7 +475,7 @@ export default function MaterialesPage() {
                         onChange={e => { setSupplierInput(e.target.value); setSupplierDropOpen(true); }}
                         onFocus={() => setSupplierDropOpen(true)}
                         placeholder={suppliers.length === 0 ? 'Escribe un proveedor...' : 'Buscar o escribir...'}
-                        className="w-full bg-slate-50 border border-slate-300 rounded-xl pl-8 pr-8 py-2 text-sm text-slate-900 font-medium outline-none focus:ring-2 focus:ring-amber-500"
+                        className="w-full bg-slate-50 border border-slate-300 rounded-xl pl-8 pr-8 py-2 text-sm text-slate-900 font-medium outline-none focus:ring-2 focus:ring-blue-500"
                       />
                       <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-3 top-2.5 pointer-events-none" />
                     </div>
@@ -490,7 +490,7 @@ export default function MaterialesPage() {
                             key={s.id}
                             type="button"
                             onClick={() => { setSupplierInput(s.name); setSupplierDropOpen(false); }}
-                            className="w-full text-left px-3 py-2 text-sm text-slate-800 hover:bg-amber-50 hover:text-amber-700 font-medium transition-colors"
+                            className="w-full text-left px-3 py-2 text-sm text-slate-800 hover:bg-blue-50 hover:text-blue-700 font-medium transition-colors"
                           >
                             {s.name}
                           </button>
@@ -499,7 +499,7 @@ export default function MaterialesPage() {
                           <button
                             type="button"
                             onClick={() => { setSupplierDropOpen(false); }}
-                            className="w-full text-left px-3 py-2 text-sm font-bold text-amber-700 hover:bg-amber-50 border-t border-slate-100 flex items-center gap-2 transition-colors"
+                            className="w-full text-left px-3 py-2 text-sm font-bold text-blue-700 hover:bg-blue-50 border-t border-slate-100 flex items-center gap-2 transition-colors"
                           >
                             <Plus className="w-3.5 h-3.5" />
                             Anadir "{supplierInput.trim()}" como nuevo proveedor
@@ -509,7 +509,7 @@ export default function MaterialesPage() {
                     )}
                   </div>
                   {supplierInput.trim() && showAddNewSupplier && (
-                    <p className="text-[10px] text-amber-600 mt-1 font-medium">Se creara automaticamente al guardar</p>
+                    <p className="text-[10px] text-blue-600 mt-1 font-medium">Se creara automaticamente al guardar</p>
                   )}
                 </div>
               </div>
@@ -575,7 +575,7 @@ export default function MaterialesPage() {
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold shadow"
+                  className="px-5 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold shadow"
                 >
                   Guardar en Catalogo
                 </button>
