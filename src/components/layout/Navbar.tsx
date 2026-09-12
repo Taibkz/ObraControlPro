@@ -1,15 +1,45 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { HardHat, RefreshCw, Plus } from 'lucide-react';
+import { HardHat, RefreshCw, Plus, Database, Check, X, Settings2 } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
+import { getSupabaseConfig, DEFAULT_PUBLISHABLE_KEY } from '@/lib/supabase';
 
 export function Navbar({ onOpenQuickLog }: { onOpenQuickLog: () => void }) {
   const pathname = usePathname();
   const { projects, resetToDemoData } = useApp();
   const [showResetConfirm, setShowResetConfirm] = useState(false);
+  const [showSupabaseModal, setShowSupabaseModal] = useState(false);
+
+  // Estado de conexión Supabase
+  const [supabaseUrl, setSupabaseUrl] = useState('');
+  const [supabaseKey, setSupabaseKey] = useState(DEFAULT_PUBLISHABLE_KEY);
+  const [isConfigured, setIsConfigured] = useState(false);
+  const [savedSuccess, setSavedSuccess] = useState(false);
+
+  useEffect(() => {
+    const config = getSupabaseConfig();
+    setSupabaseUrl(config.url);
+    setSupabaseKey(config.key);
+    setIsConfigured(config.isConfigured);
+  }, []);
+
+  const handleSaveSupabase = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('custom_supabase_url', supabaseUrl.trim());
+      localStorage.setItem('custom_supabase_key', supabaseKey.trim());
+      setIsConfigured(Boolean(supabaseUrl.trim().startsWith('http') && supabaseKey.trim()));
+      setSavedSuccess(true);
+      setTimeout(() => {
+        setSavedSuccess(false);
+        setShowSupabaseModal(false);
+        window.location.reload();
+      }, 700);
+    }
+  };
 
   const activeProjectsCount = projects.filter(p => p.status === 'activa').length;
 
@@ -36,10 +66,26 @@ export function Navbar({ onOpenQuickLog }: { onOpenQuickLog: () => void }) {
 
         {/* Quick Actions & Status */}
         <div className="flex items-center gap-2 sm:gap-3">
+          {/* Supabase Status Button */}
+          <button
+            onClick={() => setShowSupabaseModal(true)}
+            title="Estado de conexión con Supabase"
+            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold border transition-all ${
+              isConfigured
+                ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/20'
+                : 'bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700'
+            }`}
+          >
+            <Database className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">
+              {isConfigured ? 'Supabase Conectado' : 'Configurar Supabase'}
+            </span>
+          </button>
+
           {/* Badge Obras Activas */}
           <div className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-800 text-xs text-slate-300 border border-slate-700">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span>{activeProjectsCount} {activeProjectsCount === 1 ? 'obra activa' : 'obras activas'}</span>
+            <span>{activeProjectsCount} {activeProjectsCount === 1 ? 'activa' : 'activas'}</span>
           </div>
 
           {/* Quick Fichar Button */}
@@ -48,7 +94,7 @@ export function Navbar({ onOpenQuickLog }: { onOpenQuickLog: () => void }) {
             className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold text-xs sm:text-sm shadow-md shadow-amber-500/10 active:scale-95 transition-all"
           >
             <Plus className="w-4 h-4" />
-            <span>Fichar Jornada</span>
+            <span>Fichar</span>
           </button>
 
           {/* Reset Demo Data Button */}
@@ -85,6 +131,91 @@ export function Navbar({ onOpenQuickLog }: { onOpenQuickLog: () => void }) {
           </div>
         </div>
       </div>
+
+      {/* Modal Configuración Supabase */}
+      {showSupabaseModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 backdrop-blur-sm p-4 animate-in fade-in">
+          <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl border border-slate-100 overflow-hidden text-slate-900">
+            <div className="bg-slate-900 text-white px-5 py-4 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-emerald-500 text-slate-950 flex items-center justify-center font-bold">
+                  <Database className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-sm">Conexión con Supabase</h3>
+                  <p className="text-[11px] text-slate-400">Base de datos en la nube</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowSupabaseModal(false)}
+                className="text-slate-400 hover:text-white"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveSupabase} className="p-5 space-y-3.5 text-xs text-slate-700">
+              <div>
+                <label className="block font-bold text-slate-900 uppercase mb-1">
+                  Supabase Project URL *
+                </label>
+                <input
+                  type="url"
+                  value={supabaseUrl}
+                  onChange={e => setSupabaseUrl(e.target.value)}
+                  placeholder="https://xyzcompany.supabase.co"
+                  required
+                  className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 font-mono focus:ring-2 focus:ring-emerald-500 outline-none"
+                />
+                <span className="text-[10px] text-slate-400 mt-1 block">
+                  Encuéntrala en Supabase &gt; Project Settings &gt; API &gt; Project URL.
+                </span>
+              </div>
+
+              <div>
+                <label className="block font-bold text-slate-900 uppercase mb-1">
+                  Supabase Publishable / Anon Key *
+                </label>
+                <input
+                  type="text"
+                  value={supabaseKey}
+                  onChange={e => setSupabaseKey(e.target.value)}
+                  placeholder="sb_publishable_..."
+                  required
+                  className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-900 font-mono focus:ring-2 focus:ring-emerald-500 outline-none"
+                />
+              </div>
+
+              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-[11px] text-slate-600 leading-relaxed">
+                ℹ️ La clave pública ya está precargada. Solo introduce la URL de tu proyecto de Supabase (ej. <code>https://xyz.supabase.co</code>) y pulsa Guardar.
+              </div>
+
+              <div className="pt-2 flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowSupabaseModal(false)}
+                  className="px-3.5 py-2 rounded-xl bg-slate-100 text-slate-700 font-semibold"
+                >
+                  Cerrar
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold shadow flex items-center gap-1.5"
+                >
+                  {savedSuccess ? (
+                    <>
+                      <Check className="w-3.5 h-3.5" />
+                      <span>¡Guardado!</span>
+                    </>
+                  ) : (
+                    <span>Guardar y Conectar</span>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </header>
   );
 }
