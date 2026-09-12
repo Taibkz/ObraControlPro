@@ -13,12 +13,13 @@ import {
   FileCheck,
   RotateCcw,
   X,
+  Trash2,
 } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
 import { ProjectStatus } from '@/types';
 
 function ObrasContent() {
-  const { projects, addProject, completeProject, reopenProject, getProjectStats } = useApp();
+  const { projects, addProject, completeProject, reopenProject, deleteProject, getProjectStats } = useApp();
   const searchParams = useSearchParams();
   const autoOpenNew = searchParams.get('nueva') === 'true';
 
@@ -37,8 +38,9 @@ function ObrasContent() {
   const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0]);
   const [notes, setNotes] = useState('');
 
-  // Confirmar finalización
+  // Confirmar finalización y eliminación
   const [confirmFinishId, setConfirmFinishId] = useState<string | null>(null);
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
   const filteredProjects = projects.filter(p => {
     const matchesFilter = activeFilter === 'todas' ? true : p.status === activeFilter;
@@ -345,13 +347,43 @@ function ObrasContent() {
                     </div>
                   )}
 
-                  {/* Enlace al Dashboard 360° individual */}
-                  <Link
-                    href={`/obras/${proj.id}`}
-                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow transition-transform active:scale-95"
-                  >
-                    <span>Ver Dashboard Obra</span>
-                  </Link>
+                  {/* Enlace al Dashboard 360° individual & Borrar */}
+                  <div className="flex items-center gap-1.5">
+                    {confirmDeleteId === proj.id ? (
+                      <div className="flex items-center gap-1">
+                        <button
+                          onClick={() => {
+                            deleteProject(proj.id);
+                            setConfirmDeleteId(null);
+                          }}
+                          className="px-2 py-1 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-xs font-bold shadow"
+                        >
+                          ¿Borrar? Sí
+                        </button>
+                        <button
+                          onClick={() => setConfirmDeleteId(null)}
+                          className="px-2 py-1 bg-slate-200 text-slate-700 rounded-lg text-xs"
+                        >
+                          No
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => setConfirmDeleteId(proj.id)}
+                        className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                        title="Eliminar obra por completo"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+
+                    <Link
+                      href={`/obras/${proj.id}`}
+                      className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow transition-transform active:scale-95"
+                    >
+                      <span>Ver Dashboard Obra</span>
+                    </Link>
+                  </div>
                 </div>
               </div>
             );

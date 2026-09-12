@@ -147,120 +147,139 @@ export default function MaterialesPage() {
           </span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
-          {/* Selector Material */}
-          <div className="md:col-span-2">
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">
-              Material del Catálogo
-            </label>
-            <select
-              value={calcMaterialId}
-              onChange={e => setCalcMaterialId(e.target.value)}
-              className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white font-semibold focus:ring-2 focus:ring-amber-500 outline-none"
+        {materials.length === 0 ? (
+          <div className="py-6 text-center space-y-3">
+            <p className="text-slate-400 text-xs">
+              Aún no tienes materiales registrados en el catálogo maestro.
+            </p>
+            <button
+              onClick={() => setIsAddModalOpen(true)}
+              className="inline-flex items-center gap-1.5 px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs shadow"
             >
-              {materials.map(m => (
-                <option key={m.id} value={m.id}>
-                  {m.name} ({m.unitCost.toFixed(2)}€/ud · {m.coveragePerUnit} {m.unitType}/ud)
-                </option>
-              ))}
-            </select>
+              <Plus className="w-4 h-4" />
+              <span>Dar de Alta Primer Material</span>
+            </button>
           </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+              {/* Selector Material */}
+              <div className="md:col-span-2">
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">
+                  Material del Catálogo
+                </label>
+                <select
+                  value={calcMaterialId}
+                  onChange={e => setCalcMaterialId(e.target.value)}
+                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white font-semibold focus:ring-2 focus:ring-amber-500 outline-none"
+                >
+                  {materials.map(m => (
+                    <option key={m.id} value={m.id}>
+                      {m.name} ({m.unitCost.toFixed(2)}€/ud · {m.coveragePerUnit} {m.unitType}/ud)
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-          {/* Metros medidos */}
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">
-              Metros Necesarios
-            </label>
-            <div className="relative">
-              <input
-                type="number"
-                step="0.5"
-                min="0.5"
-                value={calcMeters}
-                onChange={e => setCalcMeters(parseFloat(e.target.value) || 0)}
-                className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white font-extrabold focus:ring-2 focus:ring-amber-500 outline-none"
-              />
-              <span className="absolute right-3 top-2.5 text-xs text-slate-400 font-bold">
-                {activeCalcMat?.unitType || 'm²'}
-              </span>
+              {/* Metros medidos */}
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">
+                  Metros Necesarios
+                </label>
+                <div className="relative">
+                  <input
+                    type="number"
+                    step="0.5"
+                    min="0.5"
+                    value={calcMeters}
+                    onChange={e => setCalcMeters(parseFloat(e.target.value) || 0)}
+                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white font-extrabold focus:ring-2 focus:ring-amber-500 outline-none"
+                  />
+                  <span className="absolute right-3 top-2.5 text-xs text-slate-400 font-bold">
+                    {activeCalcMat?.unitType || 'm²'}
+                  </span>
+                </div>
+              </div>
+
+              {/* % Desperdicio */}
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">
+                  % Merma / Merma
+                </label>
+                <input
+                  type="number"
+                  step="0.5"
+                  min="0"
+                  value={calcWastePct}
+                  onChange={e => setCalcWastePct(parseFloat(e.target.value) || 0)}
+                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white font-extrabold focus:ring-2 focus:ring-amber-500 outline-none"
+                />
+              </div>
             </div>
-          </div>
 
-          {/* % Desperdicio */}
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">
-              % Merma / Merma
-            </label>
-            <input
-              type="number"
-              step="0.5"
-              min="0"
-              value={calcWastePct}
-              onChange={e => setCalcWastePct(parseFloat(e.target.value) || 0)}
-              className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white font-extrabold focus:ring-2 focus:ring-amber-500 outline-none"
-            />
-          </div>
-        </div>
+            {/* Barra de Resultado en Vivo */}
+            <div className="mt-4 pt-4 border-t border-slate-700/80 grid grid-cols-1 sm:grid-cols-3 gap-3 items-center">
+              <div className="bg-slate-800/80 p-3 rounded-xl border border-slate-700 flex justify-between items-center text-xs">
+                <span className="text-slate-400">Total con desperdicio (+{calcWastePct}%):</span>
+                <span className="font-extrabold text-amber-400 text-sm">{calcQtyWithWaste} {activeCalcMat?.unitType}</span>
+              </div>
 
-        {/* Barra de Resultado en Vivo */}
-        <div className="mt-4 pt-4 border-t border-slate-700/80 grid grid-cols-1 sm:grid-cols-3 gap-3 items-center">
-          <div className="bg-slate-800/80 p-3 rounded-xl border border-slate-700 flex justify-between items-center text-xs">
-            <span className="text-slate-400">Total con desperdicio (+{calcWastePct}%):</span>
-            <span className="font-extrabold text-amber-400 text-sm">{calcQtyWithWaste} {activeCalcMat?.unitType}</span>
-          </div>
+              <div className="bg-slate-800/80 p-3 rounded-xl border border-slate-700 flex justify-between items-center text-xs">
+                <span className="text-slate-400">Piezas a comprar (Redondeo Ceil):</span>
+                <span className="font-black text-white bg-amber-500 text-slate-950 px-2 py-0.5 rounded text-sm">
+                  {calcCalculatedUnits} {activeCalcMat?.unitType === 'm2' ? 'placas' : 'unidades'}
+                </span>
+              </div>
 
-          <div className="bg-slate-800/80 p-3 rounded-xl border border-slate-700 flex justify-between items-center text-xs">
-            <span className="text-slate-400">Piezas a comprar (Redondeo Ceil):</span>
-            <span className="font-black text-white bg-amber-500 text-slate-950 px-2 py-0.5 rounded text-sm">
-              {calcCalculatedUnits} {activeCalcMat?.unitType === 'm2' ? 'placas' : 'unidades'}
-            </span>
-          </div>
+              <div className="bg-slate-800/80 p-3 rounded-xl border border-slate-700 flex justify-between items-center text-xs">
+                <span className="text-slate-400">Coste de compra estimado:</span>
+                <span className="font-black text-emerald-400 text-base">{calcTotalCost.toFixed(2)} €</span>
+              </div>
+            </div>
 
-          <div className="bg-slate-800/80 p-3 rounded-xl border border-slate-700 flex justify-between items-center text-xs">
-            <span className="text-slate-400">Coste de compra estimado:</span>
-            <span className="font-black text-emerald-400 text-base">{calcTotalCost.toFixed(2)} €</span>
-          </div>
-        </div>
+            {/* Asignar directamente a una obra activa */}
+            {projects.filter(p => p.status === 'activa').length > 0 && (
+              <div className="mt-4 pt-3 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+                <div className="flex items-center gap-2 w-full sm:w-auto">
+                  <span className="text-slate-400 font-medium">Asignar a obra:</span>
+                  <select
+                    value={targetProjectId}
+                    onChange={e => setTargetProjectId(e.target.value)}
+                    className="bg-slate-800 border border-slate-700 text-white rounded-lg px-2.5 py-1.5 text-xs font-semibold outline-none"
+                  >
+                    {projects.filter(p => p.status === 'activa').map(p => (
+                      <option key={p.id} value={p.id}>
+                        {p.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-        {/* Asignar directamente a una obra activa */}
-        <div className="mt-4 pt-3 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-          <div className="flex items-center gap-2 w-full sm:w-auto">
-            <span className="text-slate-400 font-medium">Asignar a obra:</span>
-            <select
-              value={targetProjectId}
-              onChange={e => setTargetProjectId(e.target.value)}
-              className="bg-slate-800 border border-slate-700 text-white rounded-lg px-2.5 py-1.5 text-xs font-semibold outline-none"
-            >
-              {projects.filter(p => p.status === 'activa').map(p => (
-                <option key={p.id} value={p.id}>
-                  {p.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <button
-            onClick={handleSendCalcToProject}
-            disabled={addedToObraSuccess}
-            className={`w-full sm:w-auto px-4 py-2 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow ${
-              addedToObraSuccess
-                ? 'bg-emerald-500 text-white'
-                : 'bg-amber-500 hover:bg-amber-400 text-slate-950'
-            }`}
-          >
-            {addedToObraSuccess ? (
-              <>
-                <CheckCircle2 className="w-4 h-4" />
-                <span>¡Asignado a la Obra con Éxito!</span>
-              </>
-            ) : (
-              <>
-                <span>Añadir esta partida a la obra ({calcTotalCost.toFixed(2)} €)</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </>
+                <button
+                  onClick={handleSendCalcToProject}
+                  disabled={addedToObraSuccess}
+                  className={`w-full sm:w-auto px-4 py-2 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow ${
+                    addedToObraSuccess
+                      ? 'bg-emerald-500 text-white'
+                      : 'bg-amber-500 hover:bg-amber-400 text-slate-950'
+                  }`}
+                >
+                  {addedToObraSuccess ? (
+                    <>
+                      <CheckCircle2 className="w-4 h-4" />
+                      <span>¡Asignado a la Obra con Éxito!</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Añadir esta partida a la obra ({calcTotalCost.toFixed(2)} €)</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </>
+                  )}
+                </button>
+              </div>
             )}
-          </button>
-        </div>
+          </>
+        )}
       </div>
 
       {/* Catálogo Maestro Listado */}

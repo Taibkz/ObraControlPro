@@ -118,28 +118,3 @@ CREATE INDEX IF NOT EXISTS idx_work_logs_worker ON work_logs(worker_id);
 CREATE INDEX IF NOT EXISTS idx_transactions_project ON transactions(project_id);
 CREATE INDEX IF NOT EXISTS idx_transactions_date ON transactions(payment_date);
 
--- DATOS INICIALES DE EJEMPLO (Opcional - para arrancar con catálogo listo)
-INSERT INTO profiles (full_name, role, hourly_rate, phone)
-VALUES 
-  ('Mohsin (Jefe)', 'jefe', 25.00, '612 345 678'),
-  ('Karim (Oficial / Empleado)', 'empleado', 15.00, '699 876 543')
-ON CONFLICT DO NOTHING;
-
-INSERT INTO suppliers (name, phone, address)
-VALUES 
-  ('Bricomart / Obramat', '912 345 600', 'Polígono Industrial Las Mercedes'),
-  ('Pladur & Aislamientos Saltoki', '913 456 700', 'Av. de la Industria 24'),
-  ('Almacenes Yesos del Sur', '914 567 800', 'Ctra. de Toledo km 12')
-ON CONFLICT DO NOTHING;
-
-INSERT INTO materials (name, category, unit_type, coverage_per_unit, unit_cost, default_waste_percentage, notes)
-VALUES
-  ('Placa 13mm Blanca Estándar (2.50 x 1.20m)', 'Placas y Paneles', 'm2', 3.00, 8.50, 5.0, 'Tabiques y trasdosados'),
-  ('Placa 13mm Verde Hidrófuga (2.50 x 1.20m)', 'Placas y Paneles', 'm2', 3.00, 12.90, 5.0, 'Baños y cocinas antihumedad'),
-  ('Montante 48mm galvanizado (3.00 metros)', 'Perfilería', 'ml', 3.00, 4.80, 5.0, 'Estructura vertical'),
-  ('Canal 48mm galvanizado (3.00 metros)', 'Perfilería', 'ml', 3.00, 3.95, 5.0, 'Guías suelo y techo'),
-  ('Pasta para juntas secado rápido (Saco 25kg)', 'Pastas y Adhesivos', 'saco', 25.00, 18.50, 5.0, 'Tratamiento de juntas'),
-  ('Rollo cinta de papel microporosa (150m)', 'Pastas y Adhesivos', 'rollo', 150.00, 7.20, 5.0, 'Refuerzo de juntas'),
-  ('Caja tornillos PM 25mm (1000 uds)', 'Tornillería', 'caja', 50.00, 9.90, 5.0, 'Fijación placa a perfil')
-ON CONFLICT DO NOTHING;
-

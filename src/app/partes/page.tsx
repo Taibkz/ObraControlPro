@@ -13,15 +13,25 @@ import {
   CheckCircle2,
   Filter,
   ArrowUpRight,
+  X,
+  UserPlus,
 } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
+import { WorkerRole } from '@/types';
 
 export default function PartesPage() {
-  const { workLogs, profiles, projects, addWorkLog, deleteWorkLog } = useApp();
+  const { workLogs, profiles, projects, addWorkLog, deleteWorkLog, addProfile } = useApp();
 
   const [selectedWorkerId, setSelectedWorkerId] = useState<string>('todos');
   const [selectedProjectId, setSelectedProjectId] = useState<string>('todos');
   const [selectedType, setSelectedType] = useState<string>('todos');
+
+  // Modal para dar de alta trabajadores
+  const [isAddWorkerModalOpen, setIsAddWorkerModalOpen] = useState(false);
+  const [newFullName, setNewFullName] = useState('');
+  const [newRole, setNewRole] = useState<WorkerRole>('empleado');
+  const [newHourlyRate, setNewHourlyRate] = useState<number>(15);
+  const [newPhone, setNewPhone] = useState('');
 
   const filteredLogs = workLogs.filter(log => {
     const matchesWorker = selectedWorkerId === 'todos' || log.workerId === selectedWorkerId;
@@ -35,9 +45,23 @@ export default function PartesPage() {
   const totalHours = filteredLogs.reduce((sum, l) => sum + (l.hoursWorked || 0), 0);
   const totalMeters = filteredLogs.reduce((sum, l) => sum + (l.quantityMeters || 0), 0);
 
-  // Liquidación del empleado específico
-  const employeeProfiles = profiles.filter(p => p.role === 'empleado');
   const selectedWorker = profiles.find(p => p.id === selectedWorkerId);
+
+  const handleCreateWorker = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newFullName.trim()) return;
+
+    addProfile({
+      fullName: newFullName.trim(),
+      role: newRole,
+      hourlyRate: Number(newHourlyRate),
+      phone: newPhone.trim() || undefined,
+    });
+
+    setIsAddWorkerModalOpen(false);
+    setNewFullName('');
+    setNewPhone('');
+  };
 
   return (
     <div className="space-y-6">
@@ -51,6 +75,16 @@ export default function PartesPage() {
           <p className="text-sm text-slate-500 mt-1">
             Registro diario de horas y metros ejecutados por el jefe y los empleados
           </p>
+        </div>
+
+        <div className="flex items-center gap-2.5">
+          <button
+            onClick={() => setIsAddWorkerModalOpen(true)}
+            className="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm border border-slate-200 transition-all active:scale-95"
+          >
+            <UserPlus className="w-4 h-4 text-slate-600" />
+            <span>+ Añadir Trabajador</span>
+          </button>
         </div>
       </div>
 
@@ -225,6 +259,101 @@ export default function PartesPage() {
           </div>
         )}
       </div>
+
+      {/* MODAL CREAR TRABAJADOR */}
+      {isAddWorkerModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 backdrop-blur-sm p-4 animate-in fade-in">
+          <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl border border-slate-100 overflow-hidden text-slate-800">
+            <div className="bg-slate-900 text-white px-5 py-4 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-amber-500 text-slate-950 flex items-center justify-center font-bold">
+                  <UserPlus className="w-4 h-4" />
+                </div>
+                <h3 className="font-bold text-sm">Registrar Nuevo Trabajador</h3>
+              </div>
+              <button onClick={() => setIsAddWorkerModalOpen(false)} className="text-slate-400 hover:text-white">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <form onSubmit={handleCreateWorker} className="p-5 space-y-3.5 text-xs text-slate-700">
+              <div>
+                <label className="block font-bold text-slate-900 uppercase mb-1">
+                  Nombre Completo *
+                </label>
+                <input
+                  type="text"
+                  value={newFullName}
+                  onChange={e => setNewFullName(e.target.value)}
+                  placeholder="Ej. Mohsin, Karim, Juan..."
+                  required
+                  className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 font-semibold focus:ring-2 focus:ring-amber-500 outline-none"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-bold text-slate-900 uppercase mb-1">
+                    Rol / Cargo
+                  </label>
+                  <select
+                    value={newRole}
+                    onChange={e => setNewRole(e.target.value as WorkerRole)}
+                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 outline-none"
+                  >
+                    <option value="empleado">Empleado / Oficial</option>
+                    <option value="jefe">Jefe / Autónomo</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block font-bold text-slate-900 uppercase mb-1">
+                    Tarifa Hora (€/h)
+                  </label>
+                  <input
+                    type="number"
+                    step="0.5"
+                    min="0"
+                    value={newHourlyRate}
+                    onChange={e => setNewHourlyRate(parseFloat(e.target.value) || 0)}
+                    required
+                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm font-bold text-slate-900 outline-none"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block font-bold text-slate-900 uppercase mb-1">
+                  Teléfono (Opcional)
+                </label>
+                <input
+                  type="tel"
+                  value={newPhone}
+                  onChange={e => setNewPhone(e.target.value)}
+                  placeholder="600 000 000"
+                  className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 outline-none"
+                />
+              </div>
+
+              <div className="pt-2 flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsAddWorkerModalOpen(false)}
+                  className="px-3.5 py-2 rounded-xl bg-slate-100 text-slate-700 font-semibold"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold shadow"
+                >
+                  Guardar Trabajador
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

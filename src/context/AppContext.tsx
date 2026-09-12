@@ -98,29 +98,49 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [profiles, setProfiles] = useState<Profile[]>(INITIAL_PROFILES);
   const [suppliers, setSuppliers] = useState<Supplier[]>(INITIAL_SUPPLIERS);
 
-  // Cargar de LocalStorage en cliente
+  // Cargar de LocalStorage en cliente (purgando datos falsos/demo antiguos)
   useEffect(() => {
     try {
-      const savedProjects = localStorage.getItem('obra_projects');
-      if (savedProjects) setProjects(JSON.parse(savedProjects));
+      const isCleaned = localStorage.getItem('obra_clean_v1');
+      if (!isCleaned) {
+        // Purgar datos mock antiguos
+        localStorage.removeItem('obra_projects');
+        localStorage.removeItem('obra_materials');
+        localStorage.removeItem('obra_project_materials');
+        localStorage.removeItem('obra_work_logs');
+        localStorage.removeItem('obra_transactions');
+        localStorage.removeItem('obra_profiles');
+        localStorage.removeItem('obra_suppliers');
+        localStorage.setItem('obra_clean_v1', 'true');
+        setProjects([]);
+        setMaterials([]);
+        setProjectMaterials([]);
+        setWorkLogs([]);
+        setTransactions([]);
+        setProfiles([]);
+        setSuppliers([]);
+      } else {
+        const savedProjects = localStorage.getItem('obra_projects');
+        if (savedProjects) setProjects(JSON.parse(savedProjects));
 
-      const savedMaterials = localStorage.getItem('obra_materials');
-      if (savedMaterials) setMaterials(JSON.parse(savedMaterials));
+        const savedMaterials = localStorage.getItem('obra_materials');
+        if (savedMaterials) setMaterials(JSON.parse(savedMaterials));
 
-      const savedPM = localStorage.getItem('obra_project_materials');
-      if (savedPM) setProjectMaterials(JSON.parse(savedPM));
+        const savedPM = localStorage.getItem('obra_project_materials');
+        if (savedPM) setProjectMaterials(JSON.parse(savedPM));
 
-      const savedWL = localStorage.getItem('obra_work_logs');
-      if (savedWL) setWorkLogs(JSON.parse(savedWL));
+        const savedWL = localStorage.getItem('obra_work_logs');
+        if (savedWL) setWorkLogs(JSON.parse(savedWL));
 
-      const savedTx = localStorage.getItem('obra_transactions');
-      if (savedTx) setTransactions(JSON.parse(savedTx));
+        const savedTx = localStorage.getItem('obra_transactions');
+        if (savedTx) setTransactions(JSON.parse(savedTx));
 
-      const savedProf = localStorage.getItem('obra_profiles');
-      if (savedProf) setProfiles(JSON.parse(savedProf));
+        const savedProf = localStorage.getItem('obra_profiles');
+        if (savedProf) setProfiles(JSON.parse(savedProf));
 
-      const savedSup = localStorage.getItem('obra_suppliers');
-      if (savedSup) setSuppliers(JSON.parse(savedSup));
+        const savedSup = localStorage.getItem('obra_suppliers');
+        if (savedSup) setSuppliers(JSON.parse(savedSup));
+      }
     } catch (e) {
       console.warn('Error al cargar datos locales', e);
     } finally {

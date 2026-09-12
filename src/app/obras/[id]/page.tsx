@@ -37,6 +37,8 @@ export default function ObraDetailPage() {
     profiles,
     completeProject,
     reopenProject,
+    deleteProject,
+    addProfile,
     addProjectMaterial,
     togglePurchaseProjectMaterial,
     deleteProjectMaterial,
@@ -51,11 +53,12 @@ export default function ObraDetailPage() {
   const stats = getProjectStats(projectId);
 
   const [activeTab, setActiveTab] = useState<'materiales' | 'partes' | 'pagos' | 'informe'>('materiales');
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   // Modal / Formulario añadir material con cálculo de merma
   const [isAddMatOpen, setIsAddMatOpen] = useState(false);
   const [selectedCatalogMatId, setSelectedCatalogMatId] = useState<string>('');
-  const [matName, setMatName] = useState('Placa 13mm Blanca Estándar (2.50 x 1.20m)');
+  const [matName, setMatName] = useState('');
   const [unitType, setUnitType] = useState<UnitType>('m2');
   const [requiredQty, setRequiredQty] = useState<number>(38);
   const [wastePct, setWastePct] = useState<number>(5.0);
@@ -64,7 +67,9 @@ export default function ObraDetailPage() {
 
   // Modal / Formulario añadir parte de trabajo a esta obra
   const [isAddWorkOpen, setIsAddWorkOpen] = useState(false);
-  const [workerId, setWorkerId] = useState<string>(profiles[0]?.id || '');
+  const [workerId, setWorkerId] = useState<string>(profiles[0]?.id || 'nuevo');
+  const [newWorkerName, setNewWorkerName] = useState<string>('');
+  const [newWorkerRole, setNewWorkerRole] = useState<'jefe' | 'empleado'>('empleado');
   const [workDate, setWorkDate] = useState<string>(new Date().toISOString().split('T')[0]);
   const [workType, setWorkType] = useState<WorkType>('horas');
   const [hoursWorked, setHoursWorked] = useState<number>(8);
@@ -79,6 +84,11 @@ export default function ObraDetailPage() {
   const [paymentConcept, setPaymentConcept] = useState('Certificación de avance de obra');
   const [paymentAmountNet, setPaymentAmountNet] = useState<number>(2000);
   const [paymentVatRate, setPaymentVatRate] = useState<number>(project?.vatRate || 21);
+
+  const handleDeleteProject = () => {
+    deleteProject(projectId);
+    router.push('/obras');
+  };
 
   if (!project) {
     return (
@@ -116,10 +126,11 @@ export default function ObraDetailPage() {
 
   const handleSaveMaterial = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!matName.trim()) return;
     addProjectMaterial({
       projectId,
       materialId: selectedCatalogMatId || undefined,
-      materialName: matName,
+      materialName: matName.trim(),
       unitType,
       requiredQuantity: Number(requiredQty),
       wastePercentage: Number(wastePct),
@@ -132,11 +143,27 @@ export default function ObraDetailPage() {
 
   const handleSaveWorkLog = (e: React.FormEvent) => {
     e.preventDefault();
-    const worker = profiles.find(p => p.id === workerId);
+    let targetWorkerId = workerId;
+    let targetWorkerName = '';
+
+    if (workerId === 'nuevo' || profiles.length === 0) {
+      if (!newWorkerName.trim()) return;
+      const created = addProfile({
+        fullName: newWorkerName.trim(),
+        role: newWorkerRole,
+        hourlyRate: Number(hourlyRate),
+      });
+      targetWorkerId = created.id;
+      targetWorkerName = created.fullName;
+    } else {
+      const worker = profiles.find(p => p.id === workerId);
+      targetWorkerName = worker?.fullName || 'Trabajador';
+    }
+
     addWorkLog({
       projectId,
-      workerId,
-      workerName: worker?.fullName || 'Trabajador',
+      workerId: targetWorkerId,
+      workerName: targetWorkerName,
       workDate,
       workType,
       hoursWorked: workType === 'horas' ? Number(hoursWorked) : undefined,
@@ -148,6 +175,7 @@ export default function ObraDetailPage() {
     });
     setIsAddWorkOpen(false);
     setWorkNotes('');
+    setNewWorkerName('');
   };
 
   const handleSavePayment = (e: React.FormEvent) => {
@@ -205,25 +233,35 @@ export default function ObraDetailPage() {
           </p>
         </div>
 
-        {/* Action Button: Finalizar Obra */}
+        {/* Action Button: Finalizar Obra / Eliminar */}
         <div className="flex items-center gap-2">
           {isFinished ? (
             <button
               onClick={() => reopenProject(project.id)}
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs shadow-sm transition-all"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs shadow-sm transition-all"
             >
               <RotateCcw className="w-4 h-4 text-slate-500" />
-              <span>Reabrir esta Obra</span>
+              <span>Reabrir</span>
             </button>
           ) : (
             <button
               onClick={() => completeProject(project.id)}
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm shadow-md shadow-emerald-600/20 active:scale-95 transition-all"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm shadow-md shadow-emerald-600/20 active:scale-95 transition-all"
             >
               <FileCheck className="w-4 h-4 stroke-[2.5]" />
               <span>Dar por Finalizada</span>
             </button>
           )}
+
+          {/* Botón Eliminar Obra */}
+          <button
+            onClick={() => setShowDeleteConfirm(true)}
+            className="inline-flex items-center gap-1.5 px-3 py-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold text-xs shadow-sm transition-all"
+            title="Eliminar obra por completo"
+          >
+            <Trash2 className="w-4 h-4 text-rose-600" />
+            <span className="hidden sm:inline">Eliminar</span>
+          </button>
 
           <button
             onClick={() => window.print()}
@@ -875,19 +913,33 @@ export default function ObraDetailPage() {
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block font-bold text-slate-900 uppercase tracking-wider mb-1">Trabajador</label>
-                  <select
-                    value={workerId}
-                    onChange={e => {
-                      setWorkerId(e.target.value);
-                      const w = profiles.find(p => p.id === e.target.value);
-                      if (w) setHourlyRate(w.hourlyRate);
-                    }}
-                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 font-semibold outline-none"
-                  >
-                    {profiles.map(p => (
-                      <option key={p.id} value={p.id}>{p.fullName}</option>
-                    ))}
-                  </select>
+                  {profiles.length > 0 ? (
+                    <select
+                      value={workerId}
+                      onChange={e => {
+                        setWorkerId(e.target.value);
+                        if (e.target.value !== 'nuevo') {
+                          const w = profiles.find(p => p.id === e.target.value);
+                          if (w) setHourlyRate(w.hourlyRate);
+                        }
+                      }}
+                      className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 font-semibold outline-none"
+                    >
+                      {profiles.map(p => (
+                        <option key={p.id} value={p.id}>{p.fullName}</option>
+                      ))}
+                      <option value="nuevo">+ Añadir nuevo trabajador...</option>
+                    </select>
+                  ) : (
+                    <input
+                      type="text"
+                      value={newWorkerName}
+                      onChange={e => setNewWorkerName(e.target.value)}
+                      placeholder="Nombre del trabajador..."
+                      required
+                      className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-900 outline-none"
+                    />
+                  )}
                 </div>
 
                 <div>
@@ -900,6 +952,33 @@ export default function ObraDetailPage() {
                   />
                 </div>
               </div>
+
+              {(workerId === 'nuevo' && profiles.length > 0) && (
+                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Nombre</label>
+                    <input
+                      type="text"
+                      value={newWorkerName}
+                      onChange={e => setNewWorkerName(e.target.value)}
+                      placeholder="Nombre trabajador..."
+                      required
+                      className="w-full bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Rol</label>
+                    <select
+                      value={newWorkerRole}
+                      onChange={e => setNewWorkerRole(e.target.value as any)}
+                      className="w-full bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs outline-none"
+                    >
+                      <option value="empleado">Empleado</option>
+                      <option value="jefe">Jefe / Encargado</option>
+                    </select>
+                  </div>
+                </div>
+              )}
 
               {workType === 'horas' ? (
                 <div className="grid grid-cols-2 gap-3 bg-amber-50 p-3 rounded-xl border border-amber-200">
@@ -1055,6 +1134,39 @@ export default function ObraDetailPage() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL CONFIRMAR ELIMINAR OBRA DEFINITIVAMENTE */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 backdrop-blur-sm p-4 animate-in fade-in">
+          <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl border border-slate-100 p-6 space-y-4">
+            <div className="w-12 h-12 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mx-auto">
+              <Trash2 className="w-6 h-6" />
+            </div>
+            <div className="text-center">
+              <h3 className="text-lg font-bold text-slate-900">¿Eliminar esta obra por completo?</h3>
+              <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">
+                Esta acción eliminará definitivamente la obra <strong>"{project.name}"</strong>, junto con todos sus materiales asignados, partes de horas/metros y cobros. Esta acción no se puede deshacer.
+              </p>
+            </div>
+            <div className="flex justify-end gap-2 pt-3">
+              <button
+                type="button"
+                onClick={() => setShowDeleteConfirm(false)}
+                className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                onClick={handleDeleteProject}
+                className="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs shadow"
+              >
+                Sí, Eliminar Obra
+              </button>
+            </div>
           </div>
         </div>
       )}
